@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.feicui.myapplication.MainActivity">
+
+    <CheckBox
+        android:id="@+id/checkBox_main_hobby1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="游泳" />
+
+    <CheckBox
+        android:id="@+id/checkBox_main_hobby2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上网" />
+
+    <CheckBox
+        android:id="@+id/checkBox_main_hobby3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="音乐" />
+
+    <CheckBox
+        android:id="@+id/checkBox_main_hobby4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="睡觉" />
+
+    <CheckBox
+        android:id="@+id/checkBox_main_selectall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="全选" />
+
+    <Button
+        android:id="@+id/button_main_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提交" />
+
+</LinearLayout>
