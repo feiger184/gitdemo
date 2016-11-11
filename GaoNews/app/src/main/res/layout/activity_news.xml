@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_news"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.feicui.gaonews.activity.NewsActivity">
+
+    <RelativeLayout
+        android:id="@+id/tvweviewtitle"
+        android:layout_width="match_parent"
+        android:background="#6960E6"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:id="@+id/im_webview_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:text="新闻"
+            android:textSize="30sp"
+            android:layout_toEndOf="@+id/im_webview_back" />
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_pb_newsload"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@+id/tvweviewtitle"
+        android:background="#323233"
+        android:visibility="visible" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/pb_pb_newsload"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
