@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AirQuality/AirQuality.iml" filepath="$PROJECT_DIR$/AirQuality/AirQuality.iml" />
       <module fileurl="file://$PROJECT_DIR$/GaoNews.iml" filepath="$PROJECT_DIR$/GaoNews.iml" />
       <module fileurl="file://$PROJECT_DIR$/GridViewDemo/GridViewDemo.iml" filepath="$PROJECT_DIR$/GridViewDemo/GridViewDemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

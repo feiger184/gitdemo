@@ -11,37 +11,62 @@
         android:id="@+id/biaoti"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#3333ff"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:background="#5cff33">
 
         <TextView
             android:id="@+id/tv_listTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:ellipsize="marquee"
-            android:layout_centerVertical="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:lines="1"
-            android:scrollHorizontally="true"
-            android:text="新闻 新闻  新闻  新闻  新闻 新闻  新闻  新闻  新闻 新闻  新闻  新闻"
-            android:textSize="30sp"/>
-
+            android:gravity="center"
+            android:text="新闻"
+            android:textSize="22sp"/>
 
     </RelativeLayout>
 
+    <RadioGroup
+        android:id="@+id/radiogroup"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/biaoti"
+        android:background="#ff8750"
+        android:orientation="horizontal">
 
-    <ListView
-        android:id="@+id/lv_news"
+        <RadioButton
+            android:id="@+id/rb_society"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:text="社会"
+            android:textColor="@drawable/color_radiobutton"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#000000"/>
+
+        <RadioButton
+            android:id="@+id/rb_other"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="其他"
+            android:textColor="@drawable/color_radiobutton"/>
+
+    </RadioGroup>
+
+    <FrameLayout
+        android:id="@+id/lv_news_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/biaoti"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
+        android:layout_below="@+id/radiogroup">
 
-    </ListView>
+    </FrameLayout>
 
 
 </RelativeLayout>

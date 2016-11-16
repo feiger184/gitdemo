@@ -1,137 +1,74 @@
 package com.feicui.gaonews.activity;
 
 
-import android.content.Intent;
-import android.graphics.Bitmap;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.feicui.gaonews.R;
-import com.feicui.gaonews.adapter.NewsAdapter;
-import com.feicui.gaonews.bean.ImageAsuncTaskListener;
-import com.feicui.gaonews.bean.NewsInfo;
-import com.feicui.gaonews.biz.ImageAsyncTask;
-import com.feicui.gaonews.biz.ParserNews;
-import com.feicui.gaonews.utils.HttpCilentGetOrPost;
-import com.feicui.gaonews.utils.NewsDBManager;
-
-import java.util.ArrayList;
 
 /*
 * 主界面
 * */
 public class HomeActivity extends AppCompatActivity {
-    private String url;
-    private String data;
-    private ListView lv_news;
-    private NewsAdapter newsadapter;//适配器
-    private ArrayList<NewsInfo> datalist;
-    private Handler mhandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            myHandleMessage(msg);
-
-        }
-    };
+    private RadioButton rb_society;
+    private RadioButton rb_other;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        initView();//初始化控件
+        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
+        rb_society = (RadioButton) findViewById(R.id.rb_society);
+        rb_other = (RadioButton) findViewById(R.id.rb_other);
 
-        loadData();//加载数据
+        SocietyFragment societyFragment = new SocietyFragment();
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.lv_news_fragment, societyFragment);
+        fragmentTransaction.commit();
 
 
-    }
-
-    /*
-    * 加载数据
-    * */
-    private void loadData() {
-        url = "http://118.244.212.82:9092/newsClient/news_list?ver=1&subid=1&dir=1&nid=1&stamp=20140321&cnt=20";
-        new Thread(new Runnable() {
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void run() {
-                ArrayList<NewsInfo> list = null;
-                Message msg = mhandler.obtainMessage();
-                NewsDBManager newsDBManager = NewsDBManager.getNewsDBManager(HomeActivity.this);
-                if (newsDBManager.getNewsCount()) {
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
 
-                    list = newsDBManager.queryNews();
-                    msg.what = 2;
-                    msg.obj = list;
-                    mhandler.sendMessage(msg);
+                //获取FragmentManager
+                FragmentManager fragmentManager = getFragmentManager();
+                //开启事务
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-                } else {
+                switch (i) {
+                    case R.id.rb_society:
 
-                    try {
-                        data = HttpCilentGetOrPost.HttpGet(url);
-                        ParserNews parserNews = new ParserNews(HomeActivity.this);
-                        list = parserNews.parser(data);
+                        SocietyFragment societyFragment = new SocietyFragment();
+
+                        //替换布局
+                        fragmentTransaction.replace(R.id.lv_news_fragment, societyFragment);
+                        //提交事务
+                        fragmentTransaction.commit();
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                        break;
+                    case R.id.rb_other:
+                        OthersFragment othersFragment = null;
+                        if (othersFragment == null) {
+                            othersFragment = new OthersFragment();
+                        }
+                        fragmentTransaction.replace(R.id.lv_news_fragment, othersFragment);
 
-                    msg.what = 1;
-                    msg.obj = list;
-                    mhandler.sendMessage(msg);
+                        fragmentTransaction.commit();
 
+                        break;
                 }
-
             }
-        }).start();
+        });
     }
 
-    /*
-    * 初始化控件
-    * */
-    private void initView() {
 
-        lv_news = (ListView) findViewById(R.id.lv_news);
-        lv_news.setOnItemClickListener(onitemclicklistener);
-        newsadapter = new NewsAdapter(HomeActivity.this);
-        lv_news.setAdapter(newsadapter);
-
-
-    }
-
-    protected void myHandleMessage(Message msg) {
-        if (msg.what == 1) {
-            datalist = (ArrayList<NewsInfo>) msg.obj;
-
-            newsadapter.setDataToAdapter(datalist);
-            newsadapter.notifyDataSetChanged();
-        }
-        if (msg.what == 2) {
-            datalist = (ArrayList<NewsInfo>) msg.obj;
-            newsadapter.setDataToAdapter(datalist);
-            newsadapter.notifyDataSetChanged();
-        }
-
-
-    }
-
-    //列表监听
-    AdapterView.OnItemClickListener onitemclicklistener = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent = new Intent(HomeActivity.this, NewsActivity.class);
-            NewsInfo news = datalist.get(i);
-            String link = news.getLink();
-            intent.putExtra("link", link);
-            startActivity(intent);
-        }
-    };
-
-
-   
 }

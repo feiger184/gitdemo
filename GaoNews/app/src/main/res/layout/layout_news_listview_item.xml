@@ -7,6 +7,7 @@
         android:id="@+id/im_icon"
         android:layout_width="80dp"
         android:layout_height="65dp"
+        android:layout_centerVertical="true"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_launcher" />
 
