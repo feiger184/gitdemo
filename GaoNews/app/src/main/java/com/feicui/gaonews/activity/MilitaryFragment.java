@@ -10,19 +10,20 @@ import android.view.ViewGroup;
 import com.feicui.gaonews.R;
 
 /**
- * Created by Administrator on 2016/11/16 0016.
+ * Created by Administrator on 2016/11/17 0017.
  */
 
-public class OthersFragment extends Fragment {
+public class MilitaryFragment extends Fragment {
 
+
+    public MilitaryFragment() {
+    }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.layout_others_fragment, null);
-
+        View view = inflater.inflate(R.layout.layout_military_fragment, null);
         return view;
     }
-
 }

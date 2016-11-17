@@ -49,6 +49,21 @@
             android:background="#000000"/>
 
         <RadioButton
+            android:id="@+id/rb_military"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="军事"
+            android:textColor="@drawable/color_radiobutton"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="#000000"/>
+
+        <RadioButton
             android:id="@+id/rb_other"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -60,13 +75,11 @@
 
     </RadioGroup>
 
-    <FrameLayout
+    <android.support.v4.view.ViewPager
         android:id="@+id/lv_news_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/radiogroup">
-
-    </FrameLayout>
+        android:layout_below="@+id/radiogroup"/>
 
 
 </RelativeLayout>

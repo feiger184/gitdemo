@@ -4,7 +4,5 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="checked_true">#ff4043</color>
-
-
-
+    <color name="checked_false">#000000</color>
 </resources>
