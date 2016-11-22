@@ -3,21 +3,32 @@ package com.feicui.gaonews.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.feicui.gaonews.R;
+import com.feicui.gaonews.adapter.LeftMenuAdapter;
 import com.feicui.gaonews.adapter.MFragmentPagerAdapter;
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
 
 /*
 * 主界面
 * */
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends FragmentActivity {
+    private ImageView tab_line;
     private RadioGroup radioGroup;
     private RadioButton rb_society;
     private RadioButton rb_military;
@@ -26,62 +37,96 @@ public class HomeActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private ViewPager mViewPager;
 
+    private int screenW;//显示屏宽度
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //初始化RadioButton和RadioGroup
-        InitRadioGroup();
+        InitSlidingMenu();//左侧侧滑菜单
 
-        //初始化Fragment，并添加到ArrayList中
-        InitFragment();
 
-        //初始化ViewPager
-        InitViewPager();
+        InitDrawerLayout();//右侧DrawerLayout
 
-//        SocietyFragment societyFragment = new SocietyFragment();
+
+        InitRadioGroup(); //初始化RadioButton和RadioGroup
+
+        InitTabLine();//TAB_line
+
+        InitFragment(); //初始化Fragment，并添加到ArrayList中
+
+
+        InitViewPager(); //初始化ViewPager
+
+    }
+
+
+    private void InitDrawerLayout() {
+
+        DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        LinearLayout rightmenu = (LinearLayout) findViewById(R.id.right_menu);
+        DrawerLayout.LayoutParams rightparams = (DrawerLayout.LayoutParams) rightmenu.getLayoutParams();
+        rightparams.width = getResources().getDisplayMetrics().widthPixels * 3 / 4;
+        rightmenu.setLayoutParams(rightparams);
+
+    }
+
+    private void InitSlidingMenu() {
+
+        ImageView menuleft = (ImageView) findViewById(R.id.menu_left_btn);
+
+        
+//        LeftMenuFragment left = new LeftMenuFragment();
+//        FragmentManager manager = getSupportFragmentManager();
+//        FragmentTransaction transaction = manager.beginTransaction();
 //
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.lv_news_fragment, societyFragment);
-//        fragmentTransaction.commit();
-//
-//
-//        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-//
-//                //获取FragmentManager
-//                FragmentManager fragmentManager = getFragmentManager();
-//                //开启事务
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//                switch (i) {
-//                    case R.id.rb_society:
-//
-//                        SocietyFragment societyFragment = new SocietyFragment();
-//
-//                        //替换布局
-//                        fragmentTransaction.replace(R.id.lv_news_fragment, societyFragment);
-//                        //提交事务
-//                        fragmentTransaction.commit();
-//
-//
-//                        break;
-//                    case R.id.rb_other:
-//                        OthersFragment othersFragment = null;
-//                        if (othersFragment == null) {
-//                            othersFragment = new OthersFragment();
-//                        }
-//                        fragmentTransaction.replace(R.id.lv_news_fragment, othersFragment);
-//
-//                        fragmentTransaction.commit();
-//
-//                        break;
-//                }
-//            }
-//        });
+//        transaction.commit();
+
+          final SlidingMenu slidingmenu = new SlidingMenu(this);
+        slidingmenu.setMode(SlidingMenu.LEFT);//菜单模式:
+        slidingmenu.setMenu(R.layout.layout_menu_left);//菜单布局
+        slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);//菜单显示方式
+//        slidingmenu.setTouchModeBehind(SlidingMenu.TOUCHMODE_MARGIN);//设置触摸滑动菜单时隐藏菜单
+
+        slidingmenu.setBehindWidth(400);//菜单显示宽度  单位：px
+        // 将菜单附加到当前的Activity窗口中：
+        slidingmenu.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
+
+//        //设置菜单与内容边缘的阴影效果
+//        slidingmenu.setShadowWidth(10);
+//        slidingmenu.setShadowDrawable(getResources().getDrawable(R.mipmap.ic_launcher));
+
+        slidingmenu.setFadeEnabled(true);
+
+        //菜单滑动时的渐变程度
+        slidingmenu.setFadeDegree(1.0f);
+
+        //设置滑动菜单的滑动尺度
+        slidingmenu.setBehindScrollScale(0.25f);
+
+        menuleft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                slidingmenu.toggle();
+            }
+        });
+        ListView left_menulist = (ListView) findViewById(R.id.left_menu_list);
+        ArrayList<String> list = new ArrayList<String>();
+        list.add("新闻");
+        list.add("收藏");
+        list.add("本地");
+        list.add("跟帖");
+        list.add("图片");
+        LeftMenuAdapter adapter = new LeftMenuAdapter(this, list);
+
+
+        View head = LayoutInflater.from(this).inflate(R.layout.layout_leftmenu_item_head, null);
+        View foot = LayoutInflater.from(this).inflate(R.layout.layout_leftmenu_item_foot, null);
+
+        left_menulist.addHeaderView(head);
+        left_menulist.addFooterView(foot);
+        left_menulist.setAdapter(adapter);
     }
 
 
@@ -89,6 +134,7 @@ public class HomeActivity extends AppCompatActivity {
      * 初始化RadioButton和RadioGroup
      */
     private void InitRadioGroup() {
+
         radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
         rb_society = (RadioButton) findViewById(R.id.rb_society);
         rb_military = (RadioButton) findViewById(R.id.rb_military);
@@ -112,6 +158,26 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    /*
+    * 动画
+    * */
+    private void InitTabLine() {
+        tab_line = (ImageView) findViewById(R.id.tab_line);
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        // 获取分辨率宽度
+        screenW = dm.widthPixels;
+
+        ViewGroup.LayoutParams mparams = tab_line.getLayoutParams();
+        mparams.width = (screenW / 3);
+        tab_line.setLayoutParams(mparams);
+
+
+    }
+
 
     /**
      * 初始化Fragment，并添加到ArrayList中
@@ -143,6 +209,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+
+                LinearLayout.LayoutParams mparams = (LinearLayout.LayoutParams) tab_line.getLayoutParams();
+                mparams.leftMargin = (int) ((position + positionOffset) * screenW / 3);
+                tab_line.setLayoutParams(mparams);
             }
 
             @Override
@@ -164,6 +234,7 @@ public class HomeActivity extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
+
 
             }
         });

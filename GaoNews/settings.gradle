@@ -1,1 +1,1 @@
-include ':app', ':GridViewDemo', ':AirQuality'
+include ':app', ':GridViewDemo', ':AirQuality', ':library'
