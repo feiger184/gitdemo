@@ -1,6 +1,7 @@
 package com.feicui.gaonews.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -16,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.feicui.gaonews.R;
 import com.feicui.gaonews.adapter.LeftMenuAdapter;
@@ -64,11 +66,12 @@ public class HomeActivity extends FragmentActivity {
 
     private void InitDrawerLayout() {
 
-        DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        final DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
         LinearLayout rightmenu = (LinearLayout) findViewById(R.id.right_menu);
         DrawerLayout.LayoutParams rightparams = (DrawerLayout.LayoutParams) rightmenu.getLayoutParams();
         rightparams.width = getResources().getDisplayMetrics().widthPixels * 3 / 4;
         rightmenu.setLayoutParams(rightparams);
+
 
     }
 
@@ -76,14 +79,14 @@ public class HomeActivity extends FragmentActivity {
 
         ImageView menuleft = (ImageView) findViewById(R.id.menu_left_btn);
 
-        
+
 //        LeftMenuFragment left = new LeftMenuFragment();
 //        FragmentManager manager = getSupportFragmentManager();
 //        FragmentTransaction transaction = manager.beginTransaction();
 //
 //        transaction.commit();
 
-          final SlidingMenu slidingmenu = new SlidingMenu(this);
+        final SlidingMenu slidingmenu = new SlidingMenu(this);
         slidingmenu.setMode(SlidingMenu.LEFT);//菜单模式:
         slidingmenu.setMenu(R.layout.layout_menu_left);//菜单布局
         slidingmenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);//菜单显示方式
@@ -111,6 +114,8 @@ public class HomeActivity extends FragmentActivity {
                 slidingmenu.toggle();
             }
         });
+
+
         ListView left_menulist = (ListView) findViewById(R.id.left_menu_list);
         ArrayList<String> list = new ArrayList<String>();
         list.add("新闻");
@@ -123,10 +128,20 @@ public class HomeActivity extends FragmentActivity {
 
         View head = LayoutInflater.from(this).inflate(R.layout.layout_leftmenu_item_head, null);
         View foot = LayoutInflater.from(this).inflate(R.layout.layout_leftmenu_item_foot, null);
-
         left_menulist.addHeaderView(head);
         left_menulist.addFooterView(foot);
         left_menulist.setAdapter(adapter);
+
+
+        TextView tv_login = (TextView) findViewById(R.id.tv_login);
+
+        tv_login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, LoginOnActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
 
@@ -205,6 +220,7 @@ public class HomeActivity extends FragmentActivity {
 
         //设置默认打开第一页
         mViewPager.setCurrentItem(0);
+
         mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

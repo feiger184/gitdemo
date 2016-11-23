@@ -6,11 +6,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import com.feicui.gaonews.R;
 import com.feicui.gaonews.adapter.NewsAdapter;
@@ -18,6 +19,8 @@ import com.feicui.gaonews.bean.NewsInfo;
 import com.feicui.gaonews.biz.ParserNews;
 import com.feicui.gaonews.utils.HttpCilentGetOrPost;
 import com.feicui.gaonews.utils.NewsDBManager;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 
 import java.util.ArrayList;
 
@@ -26,7 +29,7 @@ import java.util.ArrayList;
  */
 
 public class SocietyFragment extends Fragment {
-    private ListView lv_news;
+    private PullToRefreshListView lv_news;
     private NewsAdapter newsAdapter;
     private String url;
     private String data;
@@ -48,13 +51,15 @@ public class SocietyFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.layout_society_fragment, null);
 
-        lv_news = (ListView) view.findViewById(R.id.lv_news);
+        lv_news = (PullToRefreshListView) view.findViewById(R.id.lv_news);
+        lv_news.setMode(PullToRefreshBase.Mode.BOTH);
+
+        lv_news.setOnRefreshListener(onRefreshListener);
         lv_news.setOnItemClickListener(onitemclicklistener);
         newsAdapter = new NewsAdapter(getActivity());
         lv_news.setAdapter(newsAdapter);
 
         LoadListData();//加载数据
-
 
         return view;
     }
@@ -99,13 +104,16 @@ public class SocietyFragment extends Fragment {
         if (msg.what == 1) {
             datalist = (ArrayList<NewsInfo>) msg.obj;
             newsAdapter.setDataToAdapter(datalist);
+
             newsAdapter.notifyDataSetChanged();
+            lv_news.onRefreshComplete();
         }
 
         if (msg.what == 2) {
             datalist = (ArrayList<NewsInfo>) msg.obj;
             newsAdapter.setDataToAdapter(datalist);
             newsAdapter.notifyDataSetChanged();
+            lv_news.onRefreshComplete();
         }
     }
 
@@ -113,10 +121,34 @@ public class SocietyFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             Intent intent = new Intent(getActivity(), NewsActivity.class);
-            NewsInfo newsinfo = datalist.get(i);
+            Log.e("iiiii",i+"");
+            NewsInfo newsinfo = datalist.get(i-1);
             String link = newsinfo.getLink();
             intent.putExtra("link", link);
             startActivity(intent);
+        }
+    };
+
+
+    PullToRefreshBase.OnRefreshListener2 onRefreshListener = new PullToRefreshBase.OnRefreshListener2() {
+        @Override
+        public void onPullDownToRefresh(PullToRefreshBase refreshView) {
+
+
+            String label = DateUtils.formatDateTime(getActivity(), System.currentTimeMillis(),
+                    DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_ALL);
+
+            refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+
+            LoadListData();
+
+
+        }
+
+        @Override
+        public void onPullUpToRefresh(PullToRefreshBase refreshView) {
+            LoadListData();
+
         }
     };
 

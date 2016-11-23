@@ -92,14 +92,13 @@
             android:id="@+id/tab_line"
             android:layout_width="100dp"
             android:layout_height="3dp"
-            android:background="#030fff"  />
+            android:background="#030fff"/>
 
 
         <android.support.v4.view.ViewPager
             android:id="@+id/lv_news_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/radiogroup"/>
+            android:layout_height="match_parent"/>
     </LinearLayout>
 
     <LinearLayout
@@ -107,6 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="right"
+        android:clickable="true"
         android:orientation="vertical">
 
         <include layout="@layout/layout_menu_right"/>
