@@ -1,11 +1,11 @@
 package com.feicui.gaonews.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.feicui.gaonews.R;
 
-public class LoginOnActivity extends AppCompatActivity {
+public class LoginOnActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

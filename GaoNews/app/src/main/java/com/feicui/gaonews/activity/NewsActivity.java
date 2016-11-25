@@ -1,7 +1,7 @@
 package com.feicui.gaonews.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebChromeClient;
@@ -15,7 +15,7 @@ import com.feicui.gaonews.R;
 /*
 * WebView界面
 * */
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends Activity {
     private WebView webView;
     private ProgressBar pb_newsload;
     private ImageView imviewback;

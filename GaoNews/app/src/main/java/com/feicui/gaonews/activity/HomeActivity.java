@@ -63,7 +63,9 @@ public class HomeActivity extends FragmentActivity {
 
     }
 
-
+    /*
+    * 右侧DrawerLayout
+    * */
     private void InitDrawerLayout() {
 
         final DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
@@ -75,6 +77,10 @@ public class HomeActivity extends FragmentActivity {
 
     }
 
+
+    /*
+    * 左侧侧滑菜单
+    * */
     private void InitSlidingMenu() {
 
         ImageView menuleft = (ImageView) findViewById(R.id.menu_left_btn);
