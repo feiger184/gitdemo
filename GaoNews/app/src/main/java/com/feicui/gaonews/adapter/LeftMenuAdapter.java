@@ -8,7 +8,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.feicui.gaonews.R;
-import com.feicui.gaonews.activity.HomeActivity;
 
 import java.util.ArrayList;
 
@@ -20,8 +19,8 @@ public class LeftMenuAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<String> list = new ArrayList<String>();
 
-    public LeftMenuAdapter(HomeActivity homeActivity, ArrayList list) {
-        this.context = homeActivity;
+    public LeftMenuAdapter(Context context, ArrayList list) {
+        this.context = context;
         this.list = list;
     }
 

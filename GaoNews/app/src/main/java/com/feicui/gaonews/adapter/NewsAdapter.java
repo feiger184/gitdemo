@@ -86,7 +86,7 @@ public class NewsAdapter extends BaseAdapter implements ImageAsuncTaskListener {
             holder.im_icon.setImageBitmap(defoultBitmap);
         }
         holder.tv_title.setText(news.getTitle());
-        holder.tv_summary.setText(news.getSummary());
+        holder.tv_summary.setText(news.getSummary()); 
         holder.tv_time.setText(news.getStamp());
         return view;
     }

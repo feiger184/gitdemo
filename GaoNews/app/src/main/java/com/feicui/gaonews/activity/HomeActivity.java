@@ -1,7 +1,9 @@
 package com.feicui.gaonews.activity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,12 +14,14 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.feicui.gaonews.R;
 import com.feicui.gaonews.adapter.LeftMenuAdapter;
@@ -25,6 +29,8 @@ import com.feicui.gaonews.adapter.MFragmentPagerAdapter;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 import java.util.ArrayList;
+
+import cn.jpush.android.api.JPushInterface;
 
 /*
 * 主界面
@@ -38,8 +44,10 @@ public class HomeActivity extends FragmentActivity {
     private ArrayList<Fragment> fragmentArrayList;
     private FragmentManager fragmentManager;
     private ViewPager mViewPager;
-
+    private DrawerLayout drawerlayout;
     private int screenW;//显示屏宽度
+    private boolean isnotificationsave;// 通知图标的标识
+    private ToggleButton tgl_beginoff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +71,6 @@ public class HomeActivity extends FragmentActivity {
 
     }
 
-    /*
-    * 右侧DrawerLayout
-    * */
-    private void InitDrawerLayout() {
-
-        final DrawerLayout drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-        LinearLayout rightmenu = (LinearLayout) findViewById(R.id.right_menu);
-        DrawerLayout.LayoutParams rightparams = (DrawerLayout.LayoutParams) rightmenu.getLayoutParams();
-        rightparams.width = getResources().getDisplayMetrics().widthPixels * 3 / 4;
-        rightmenu.setLayoutParams(rightparams);
-
-
-    }
-
 
     /*
     * 左侧侧滑菜单
@@ -84,13 +78,6 @@ public class HomeActivity extends FragmentActivity {
     private void InitSlidingMenu() {
 
         ImageView menuleft = (ImageView) findViewById(R.id.menu_left_btn);
-
-
-//        LeftMenuFragment left = new LeftMenuFragment();
-//        FragmentManager manager = getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//
-//        transaction.commit();
 
         final SlidingMenu slidingmenu = new SlidingMenu(this);
         slidingmenu.setMode(SlidingMenu.LEFT);//菜单模式:
@@ -148,6 +135,89 @@ public class HomeActivity extends FragmentActivity {
                 startActivity(intent);
             }
         });
+
+
+    }
+
+
+    /*
+   * 右侧DrawerLayout
+   * */
+    private void InitDrawerLayout() {
+
+        drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        final LinearLayout rightmenu = (LinearLayout) findViewById(R.id.right_menu);
+        DrawerLayout.LayoutParams rightparams = (DrawerLayout.LayoutParams) rightmenu.getLayoutParams();
+        rightparams.width = getResources().getDisplayMetrics().widthPixels * 3 / 4;
+        rightmenu.setLayoutParams(rightparams);
+        ImageView menu_right_back = (ImageView) findViewById(R.id.im_right_back);
+
+        menu_right_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerlayout.closeDrawer(rightmenu);//关闭右边菜单
+            }
+        });
+
+
+
+
+        ImageView menu_right = (ImageView) findViewById(R.id.menu_right_btn);
+
+        menu_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerlayout.openDrawer(rightmenu);//打开右边DrawerLayout菜单
+            }
+        });
+
+        tgl_beginoff = (ToggleButton) findViewById(R.id.tgl_beginstart);
+        getNotificationPreferences();
+        tgl_beginoff.setChecked(isnotificationsave);
+        tgl_beginoff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                // ischecked 是你点击开关时 ，的状态 ，点开是true ，那么你就要创建Notification
+                // 点击关的时候，，关闭所有Notification。
+                if (isChecked) {
+
+                    JPushInterface.resumePush(getApplicationContext());
+                } else {
+
+                    JPushInterface.stopPush(getApplicationContext());
+                }
+
+                // 点击了一下这个开关就会执行到这，保持状态 ，这个状态的值 是 true或者false
+                saveNotificationPreferences(isChecked);
+            }
+        });
+
+
+    }
+
+
+    /**
+     * 存状态
+     */
+    protected void saveNotificationPreferences(boolean arg1) {
+        SharedPreferences sharepreference = getSharedPreferences("tongzhi",
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharepreference.edit();
+
+        editor.putBoolean("istongzhisave", arg1);
+        editor.commit();
+
+    }
+
+    /**
+     * 取状态
+     */
+    protected void getNotificationPreferences() {
+        SharedPreferences preferences = getSharedPreferences("tongzhi",
+                Context.MODE_PRIVATE);
+        isnotificationsave = preferences.getBoolean("istongzhisave", true);
+
     }
 
 
